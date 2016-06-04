@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import HomeComponent from './components/home.vue'
 import UserListComponent from './components/users/user_list.vue'
 import UserAddComponent from './components/users/user_add.vue'
+import UserEditComponent from './components/users/user_edit.vue'
 
 Vue.use(VueRouter)
 
@@ -22,6 +23,9 @@ Router.map({
     },
     '/users/add':{
         component: UserAddComponent
+    },
+    '/users/edit/:user_id':{
+        component: UserEditComponent
     }
 })
 

@@ -26,7 +26,7 @@ _vue2.default.http.options.root = "http://localhost:8000/api/v1";
 // Start the app
 _route2.default.start(App, '#app');
 
-},{"./route":5,"vue":10,"vue-resource":8}],2:[function(require,module,exports){
+},{"./route":6,"vue":11,"vue-resource":9}],2:[function(require,module,exports){
 "use strict";
 
 module.exports = {};
@@ -42,7 +42,31 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-5655a4c7", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":10,"vue-hot-reload-api":7}],3:[function(require,module,exports){
+},{"vue":11,"vue-hot-reload-api":8}],3:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+	//props:{
+	//		users: Object
+	//	},
+	data: function data() {
+		return {
+			user: {}
+		};
+	},
+	methods: {
+		addUser: function addUser() {
+			this.$http({ url: 'http://localhost:8000/api/v1/person/', method: "POST", data: this.user }).then(function (response) {
+				this.$router.go('/users');
+			}, function (response) {
+				console.log("Something went wrong");
+				console.log(response);
+			});
+		}
+	}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <h1>Add new User</h1> \n\t\tUser name: <input type=\"text\" v-model=\"user.name\" placeholder=\"enter user's name\">\n\t\t<button v-on:click=\"addUser()\">Save</button> <br><br>\n\t\t<a v-link=\"{path: '/users'}\">click</a> to go back to user's list!\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -53,7 +77,53 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-7f1a0888", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":10,"vue-hot-reload-api":7}],4:[function(require,module,exports){
+},{"vue":11,"vue-hot-reload-api":8}],4:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+	//props:{
+	//		users: Object
+	//	},
+	data: function data() {
+		return {
+			user: {}
+		};
+	},
+	created: function created() {
+		this.getUser(this.$route.params.user_id);
+	},
+	methods: {
+		updateUser: function updateUser() {
+			this.$http({ url: 'http://localhost:8000/api/v1/person/' + this.user.id + '/', method: "PUT", data: this.user }).then(function (response) {
+				this.$router.go('/users');
+			}, function (response) {
+				console.log("Something went wrong");
+				console.log(response);
+			});
+		},
+		getUser: function getUser(id) {
+			this.$http.get({ url: 'http://localhost:8000/api/v1/person/' + id }).then(function (response) {
+				this.user = response.data;
+			}, function (response) {
+				console.log(response);
+				console.log("error!");
+			});
+		}
+	}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<h1>User details of {{user.name}}</h1> \n\t<input type=\"text\" v-model=\"user.name\">\n\t<button v-on:click=\"updateUser()\">update</button>\n\t<br><br>\n\t<a v-link=\"{path: '/users/add'}\">click</a> to add new user! <br>\n\t<a v-link=\"{path: '/users'}\">click</a> to go back to user's list!\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-0c99ba02", module.exports)
+  } else {
+    hotAPI.update("_v-0c99ba02", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":11,"vue-hot-reload-api":8}],5:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -71,8 +141,6 @@ module.exports = {
 	methods: {
 		removeUser: function removeUser(id) {
 			this.$http({ url: 'http://localhost:8000/api/v1/person/' + id + '/', method: "DELETE" }).then(function (response) {
-				console.log("done");
-				console.log(response);
 				this.getUsers();
 			}, function (response) {
 				console.log("Something went wrong");
@@ -91,7 +159,7 @@ module.exports = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <h1>List of users</h1> \n    \t<div v-for=\"user in users\"> \n\t\t\t\t<h4>{{user.id}}. {{user.name}} <button>edit</button> <button v-on:click=\"removeUser(user.id)\">delete</button> </h4><h4>\n    \t</h4></div>\n    \t<a v-link=\"{path: '/users/add'}\">click</a> to add new user!\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <h1>List of users</h1> \n    \t<div v-for=\"user in users\"> \n\t\t\t\t<h4>{{user.id}}. {{user.name}} <a v-link=\"{path: 'users/edit/'+ user.id }\">edit</a> <a href=\"javascript:void(0)\" v-on:click=\"removeUser(user.id)\">delete</a> </h4><h4>\n    \t</h4></div>\n    \t<a v-link=\"{path: '/users/add'}\">click</a> to add new user!\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -102,7 +170,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-2b2a08da", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":10,"vue-hot-reload-api":7}],5:[function(require,module,exports){
+},{"vue":11,"vue-hot-reload-api":8}],6:[function(require,module,exports){
 'use strict';
 
 var _vue = require('vue');
@@ -125,6 +193,10 @@ var _user_add = require('./components/users/user_add.vue');
 
 var _user_add2 = _interopRequireDefault(_user_add);
 
+var _user_edit = require('./components/users/user_edit.vue');
+
+var _user_edit2 = _interopRequireDefault(_user_edit);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _vue2.default.use(_vueRouter2.default);
@@ -145,6 +217,9 @@ Router.map({
     },
     '/users/add': {
         component: _user_add2.default
+    },
+    '/users/edit/:user_id': {
+        component: _user_edit2.default
     }
 });
 
@@ -162,7 +237,7 @@ Router.beforeEach(function (transition) {
 
 module.exports = Router;
 
-},{"./components/home.vue":2,"./components/users/user_add.vue":3,"./components/users/user_list.vue":4,"vue":10,"vue-router":9}],6:[function(require,module,exports){
+},{"./components/home.vue":2,"./components/users/user_add.vue":3,"./components/users/user_edit.vue":4,"./components/users/user_list.vue":5,"vue":11,"vue-router":10}],7:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -258,7 +333,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var Vue // late bind
 var map = Object.create(null)
 var shimmed = false
@@ -558,7 +633,7 @@ function format (id) {
   return id.match(/[^\/]+\.vue$/)[0]
 }
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /**
  * vue-resource v0.7.2
  * https://github.com/vuejs/vue-resource
@@ -2216,7 +2291,7 @@ module.exports =
 
 /***/ }
 /******/ ]);
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /*!
  * vue-router v0.7.13
  * (c) 2016 Evan You
@@ -4926,7 +5001,7 @@ module.exports =
   return Router;
 
 }));
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function (process,global){
 /*!
  * Vue.js v1.0.24
@@ -14959,4 +15034,4 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":6}]},{},[1]);
+},{"_process":7}]},{},[1]);

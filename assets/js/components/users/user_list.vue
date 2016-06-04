@@ -1,7 +1,7 @@
 <template>
     <h1>List of users</h1> 
     	<div v-for="user in users"> 
-				<h4>{{user.id}}. {{user.name}} <button>edit</button> <button v-on:click="removeUser(user.id)">delete</button> <h4>
+				<h4>{{user.id}}. {{user.name}} <a v-link="{path: 'users/edit/'+ user.id }">edit</a> <a href="javascript:void(0)" v-on:click="removeUser(user.id)">delete</a> <h4>
     	</div>
     	<a v-link="{path: '/users/add'}">click</a> to add new user!
 </template>
@@ -22,8 +22,6 @@ module.exports = {
 	methods:{
 		removeUser: function(id) {
 			this.$http({url: 'http://localhost:8000/api/v1/person/' + id + '/', method:"DELETE"}).then(function(response){
-				console.log("done")
-				console.log(response)
 				this.getUsers();
 			}, function(response){
 				console.log("Something went wrong")

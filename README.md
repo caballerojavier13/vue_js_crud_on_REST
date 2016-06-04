@@ -1,7 +1,7 @@
 # README #
 Basic CRUD on Person model implemented using Vue.js
 
-### set up ###
+### setup ###
 * Take a pull and run following commands
 * npm install
 * gulp

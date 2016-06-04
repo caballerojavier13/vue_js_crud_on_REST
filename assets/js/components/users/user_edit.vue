@@ -1,6 +1,7 @@
 <template>
     <h1>User details of {{user.name}}</h1> 
-    	<input type="text" v-model="user.name">
+    	<span style="color:red" v-show="invalidName" ><i>Name cannot be blank!</i></span><br>
+    	<input type="text" v-model="user.name"> 
     	<button v-on:click="updateUser()">update</button>
     	<br><br>
     	<a v-link="{path: '/users/add'}">click</a> to add new user! <br>
@@ -14,7 +15,8 @@ module.exports = {
 //	},
 	data: function(){
 		return {
-			user: {}
+			user: {},
+			invalidName: false
 		}
 	},
 	created: function(){
@@ -22,6 +24,10 @@ module.exports = {
 	},
 	methods:{
 		updateUser: function() {
+			if(this.user.name == ""){
+				this.invalidName = true
+				return
+			}
 			this.$http({url: 'http://localhost:8000/api/v1/person/' + this.user.id + '/', method:"PUT", data: this.user}).then(function(response){
 					this.$router.go('/users')
 			}, function(response){

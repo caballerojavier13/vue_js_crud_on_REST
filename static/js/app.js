@@ -43,7 +43,7 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":11,"vue-hot-reload-api":8}],3:[function(require,module,exports){
-'use strict';
+"use strict";
 
 module.exports = {
 	//props:{
@@ -51,11 +51,17 @@ module.exports = {
 	//	},
 	data: function data() {
 		return {
-			user: {}
+			user: {},
+			invalidName: false
 		};
 	},
 	methods: {
 		addUser: function addUser() {
+			if (this.user.name == "" || !this.user.hasOwnProperty("name")) {
+				console.log("asasd");
+				this.invalidName = true;
+				return;
+			}
 			this.$http({ url: 'http://localhost:8000/api/v1/person/', method: "POST", data: this.user }).then(function (response) {
 				this.$router.go('/users');
 			}, function (response) {
@@ -66,7 +72,7 @@ module.exports = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <h1>Add new User</h1> \n\t\tUser name: <input type=\"text\" v-model=\"user.name\" placeholder=\"enter user's name\">\n\t\t<button v-on:click=\"addUser()\">Save</button> <br><br>\n\t\t<a v-link=\"{path: '/users'}\">click</a> to go back to user's list!\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <h1>Add new User</h1> \n    \t<span style=\"color:red\" v-show=\"invalidName\"><i>Name cannot be blank!</i></span><br>\n    \tUser name: <input type=\"text\" v-model=\"user.name\" placeholder=\"enter user's name\">\n\t\t<button v-on:click=\"addUser()\">Save</button> <br><br>\n\t\t<a v-link=\"{path: '/users'}\">click</a> to go back to user's list!\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -86,7 +92,8 @@ module.exports = {
 	//	},
 	data: function data() {
 		return {
-			user: {}
+			user: {},
+			invalidName: false
 		};
 	},
 	created: function created() {
@@ -94,6 +101,10 @@ module.exports = {
 	},
 	methods: {
 		updateUser: function updateUser() {
+			if (this.user.name == "") {
+				this.invalidName = true;
+				return;
+			}
 			this.$http({ url: 'http://localhost:8000/api/v1/person/' + this.user.id + '/', method: "PUT", data: this.user }).then(function (response) {
 				this.$router.go('/users');
 			}, function (response) {
@@ -112,7 +123,7 @@ module.exports = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<h1>User details of {{user.name}}</h1> \n\t<input type=\"text\" v-model=\"user.name\">\n\t<button v-on:click=\"updateUser()\">update</button>\n\t<br><br>\n\t<a v-link=\"{path: '/users/add'}\">click</a> to add new user! <br>\n\t<a v-link=\"{path: '/users'}\">click</a> to go back to user's list!\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<h1>User details of {{user.name}}</h1> \n\t<span style=\"color:red\" v-show=\"invalidName\"><i>Name cannot be blank!</i></span><br>\n\t<input type=\"text\" v-model=\"user.name\"> \n\t<button v-on:click=\"updateUser()\">update</button>\n\t<br><br>\n\t<a v-link=\"{path: '/users/add'}\">click</a> to add new user! <br>\n\t<a v-link=\"{path: '/users'}\">click</a> to go back to user's list!\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

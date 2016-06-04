@@ -1,20 +1,27 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeComponent from './components/pages/home.vue'
+import HomeComponent from './components/home.vue'
+import UserListComponent from './components/users/user_list.vue'
+import UserAddComponent from './components/users/user_add.vue'
 
 Vue.use(VueRouter)
 
 // Create a router instance
 var Router = new VueRouter({
-    history: true,
-    linkActiveClass: 'active'
+    //history: true,
+    //linkActiveClass: 'active'
 })
 
 // Define routes
 Router.map({
     '/': {
-        name: 'home',
         component: HomeComponent
+    },
+    '/users':{
+        component: UserListComponent
+    },
+    '/users/add':{
+        component: UserAddComponent
     }
 })
 

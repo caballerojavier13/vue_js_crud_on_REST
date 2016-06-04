@@ -20,7 +20,7 @@ elixir(function(mix) {
        
 
         // Scripts
-        .browserify('drf_vue.js', 'static/js/app.js')
+        .browserify('app.js', 'static/js/app.js')
 
         // Script merging
         //.scripts([

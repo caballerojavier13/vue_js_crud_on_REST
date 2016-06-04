@@ -1,20 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-"use strict";
-
-module.exports = {};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<h1>drf-vue</h1>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-ee9e5422", module.exports)
-  } else {
-    hotAPI.update("_v-ee9e5422", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"vue":8,"vue-hot-reload-api":5}],2:[function(require,module,exports){
 'use strict';
 
 var _vue = require('vue');
@@ -37,10 +21,73 @@ _vue2.default.use(_vueResource2.default);
 // Define a root component to represent the app
 var App = _vue2.default.extend({});
 
+_vue2.default.http.options.root = "http://localhost:8000/api/v1";
+
 // Start the app
 _route2.default.start(App, '#app');
 
-},{"./route":3,"vue":8,"vue-resource":6}],3:[function(require,module,exports){
+},{"./route":5,"vue":10,"vue-resource":8}],2:[function(require,module,exports){
+"use strict";
+
+module.exports = {};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<h1>Home!</h1>\n<a v-link=\"{ path: '/users'}\">Users</a>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-5655a4c7", module.exports)
+  } else {
+    hotAPI.update("_v-5655a4c7", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":10,"vue-hot-reload-api":7}],3:[function(require,module,exports){
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-7f1a0888", module.exports)
+  } else {
+    hotAPI.update("_v-7f1a0888", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":10,"vue-hot-reload-api":7}],4:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+	//props:{
+	//		users: Object
+	//	},
+	data: function data() {
+		return {
+			users: []
+		};
+	},
+	created: function created() {
+		this.$http({ url: 'http://localhost:8000/api/v1/person', method: 'GET' }).then(function (response) {
+			console.log(response);
+			this.users = response.data.objects;
+		}, function (response) {
+			console.log(response);
+			console.log("error!");
+		});
+	}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <h1>List of users</h1> <a v-link=\"{path: '/users/add'}\">click</a> to add new user!\n    <ul>\n    \t<li v-for=\"user in users\"> \n\t\t\t<h4>{{user.name}} <button>edit</button> <button>delete</button> </h4><h4>\n    \t</h4></li>\n    </ul>\t\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-2b2a08da", module.exports)
+  } else {
+    hotAPI.update("_v-2b2a08da", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":10,"vue-hot-reload-api":7}],5:[function(require,module,exports){
 'use strict';
 
 var _vue = require('vue');
@@ -51,9 +98,17 @@ var _vueRouter = require('vue-router');
 
 var _vueRouter2 = _interopRequireDefault(_vueRouter);
 
-var _home = require('./components/pages/home.vue');
+var _home = require('./components/home.vue');
 
 var _home2 = _interopRequireDefault(_home);
+
+var _user_list = require('./components/users/user_list.vue');
+
+var _user_list2 = _interopRequireDefault(_user_list);
+
+var _user_add = require('./components/users/user_add.vue');
+
+var _user_add2 = _interopRequireDefault(_user_add);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -61,15 +116,20 @@ _vue2.default.use(_vueRouter2.default);
 
 // Create a router instance
 var Router = new _vueRouter2.default({
-    history: true,
-    linkActiveClass: 'active'
+    //history: true,
+    //linkActiveClass: 'active'
 });
 
 // Define routes
 Router.map({
     '/': {
-        name: 'home',
         component: _home2.default
+    },
+    '/users': {
+        component: _user_list2.default
+    },
+    '/users/add': {
+        component: _user_add2.default
     }
 });
 
@@ -87,7 +147,7 @@ Router.beforeEach(function (transition) {
 
 module.exports = Router;
 
-},{"./components/pages/home.vue":1,"vue":8,"vue-router":7}],4:[function(require,module,exports){
+},{"./components/home.vue":2,"./components/users/user_add.vue":3,"./components/users/user_list.vue":4,"vue":10,"vue-router":9}],6:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -183,7 +243,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var Vue // late bind
 var map = Object.create(null)
 var shimmed = false
@@ -483,7 +543,7 @@ function format (id) {
   return id.match(/[^\/]+\.vue$/)[0]
 }
 
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /**
  * vue-resource v0.7.2
  * https://github.com/vuejs/vue-resource
@@ -2141,7 +2201,7 @@ module.exports =
 
 /***/ }
 /******/ ]);
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /*!
  * vue-router v0.7.13
  * (c) 2016 Evan You
@@ -4851,7 +4911,7 @@ module.exports =
   return Router;
 
 }));
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function (process,global){
 /*!
  * Vue.js v1.0.24
@@ -14884,4 +14944,4 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":4}]},{},[2]);
+},{"_process":6}]},{},[1]);

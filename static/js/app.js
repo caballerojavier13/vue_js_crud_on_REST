@@ -66,17 +66,32 @@ module.exports = {
 		};
 	},
 	created: function created() {
-		this.$http({ url: 'http://localhost:8000/api/v1/person', method: 'GET' }).then(function (response) {
-			console.log(response);
-			this.users = response.data.objects;
-		}, function (response) {
-			console.log(response);
-			console.log("error!");
-		});
+		this.getUsers();
+	},
+	methods: {
+		removeUser: function removeUser(id) {
+			this.$http({ url: 'http://localhost:8000/api/v1/person/' + id + '/', method: "DELETE" }).then(function (response) {
+				console.log("done");
+				console.log(response);
+				this.getUsers();
+			}, function (response) {
+				console.log("Something went wrong");
+				console.log(response);
+			});
+		},
+		getUsers: function getUsers() {
+			this.$http.get({ url: 'http://localhost:8000/api/v1/person' }).then(function (response) {
+				console.log(response);
+				this.users = response.data.objects;
+			}, function (response) {
+				console.log(response);
+				console.log("error!");
+			});
+		}
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <h1>List of users</h1> <a v-link=\"{path: '/users/add'}\">click</a> to add new user!\n    <ul>\n    \t<li v-for=\"user in users\"> \n\t\t\t<h4>{{user.name}} <button>edit</button> <button>delete</button> </h4><h4>\n    \t</h4></li>\n    </ul>\t\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <h1>List of users</h1> \n    \t<div v-for=\"user in users\"> \n\t\t\t\t<h4>{{user.id}}. {{user.name}} <button>edit</button> <button v-on:click=\"removeUser(user.id)\">delete</button> </h4><h4>\n    \t</h4></div>\n    \t<a v-link=\"{path: '/users/add'}\">click</a> to add new user!\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

@@ -29,6 +29,7 @@ Router.map({
     }
 })
 
+
 /*
 Router.beforeEach(function (transition) {
     if (transition.to.auth && !Auth.user.authenticated) {

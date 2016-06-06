@@ -20,7 +20,6 @@ module.exports = {
 	methods:{
 		addUser: function() {
 			if(this.user.name == "" || !this.user.hasOwnProperty("name") ){
-				console.log("asasd")
 				this.invalidName = true
 				return
 			}
